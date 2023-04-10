@@ -1,31 +1,33 @@
 const express = require('express')
 const app = express()
 
-const middleware = (req,res,next) =>{
-    console.log("hi this is middleware");
-    next()
-}
+const members = [{
+    id:1,
+    name:"John Doe",
+    email:"john@gmail.com",
+    status:"active"
+}, {
+    id:2,
+    name:"Jane Doe",
+    email:"jane@gmail.com",
+    status:"inactive"
+}, {
+    id:3,
+    name:"Steve",
+    email:"steve@gmail.com",
+    status:"active"
+}]
 
-app.use(middleware)
+app.use(express.json())
 
-app.get('/',middleware,(req,res) =>{
-    res.send("Hi This is GET request")
+app.get("/showAllUser",(req,res)=>{
+    res.status(200).json(members)
 })
 
-app.get('/test',middleware,(req,res) =>{
-    res.send("This is Test Url")
-})
-
-app.post("/",(req,res) =>{
-    res.send("Hi This is POST request")
-})
-
-app.put("/",(req,res) =>{
-    res.send("Hi This is PUT request")
-})
-
-app.delete("/",(req,res) =>{
-    res.send("Hi This is DELETE request")
+app.get("/showUser/:uid",(req,res)=>{
+    const id = (req.params.uid);
+    const user = members.filter(member => member.id === parseInt(id))
+    user.length !==0 ? res.status(200).json(user) : res.status(200).json({msg:"User not found"})
 })
 
 const PORT = 3000
