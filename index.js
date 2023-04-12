@@ -1,4 +1,5 @@
 const express = require('express')
+const uuid = require('uuid')
 const app = express()
 
 const members = [{
@@ -24,11 +25,21 @@ app.get("/showAllUser",(req,res)=>{
     res.status(200).json(members)
 })
 
+
 app.get("/showUser/:uid",(req,res)=>{
     const id = (req.params.uid);
     const user = members.filter(member => member.id === parseInt(id))
-    user.length !==0 ? res.status(200).json(user) : res.status(200).json({msg:"User not found"})
+    user.length !==0 ? res.status(200).json(user) : res.status(200).json({msg:"User Not Found"})
 })
 
-const PORT = 3000
-app.listen(PORT,()=> console.log(`Server is running at ${PORT}`))
+app.post("/addUser/",(req,res)=>{
+    // const name = req.body.name
+    // const email = req.body.email
+    // const password = req.body.password
+    const {name,email} = {...req.body}
+    members.push({id:uuid.v4(),name,email})
+    res.status(200).json(members)
+})
+
+const PORT = process.env.PORT ||3000
+app.listen(PORT,()=> console.log(`Server is running at ${PORT}`));
