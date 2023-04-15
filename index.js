@@ -52,5 +52,22 @@ app.delete("/deleteUser/:uid",(req,res)=>{
     }
 })
 
+app.put("/updateUser/:id",(req,res)=>{
+    const found = members.some(member=> member.id === parseInt(req.params.id))
+    if(found){
+        const updMember = req.body
+        members.forEach(member => {
+           if(member.id === parseInt(req.params.id)){
+                member.name = updMember.name
+                member.email = updMember.email
+            }
+        })
+        res.status(200).json(members)
+    }
+    else{
+        res.status(400).json({msg:`No member found with the id of ${req.params.id}`})
+    }
+})
+
 const PORT = process.env.PORT ||3000
 app.listen(PORT,()=> console.log(`Server is running at ${PORT}`));
