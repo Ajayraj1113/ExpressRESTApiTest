@@ -41,5 +41,15 @@ app.post("/addUser/",(req,res)=>{
     res.status(200).json(members)
 })
 
+app.delete("/deleteUser/:uid",(req,res)=>{
+    const id = parseInt(req.params.uid)
+    const found = members.some(member => member.id === id)
+    if(found){
+        
+    }else{
+        res.status(400).json({msg:`No member found with the ID of ${id}`})
+    }
+})
+
 const PORT = process.env.PORT ||3000
 app.listen(PORT,()=> console.log(`Server is running at ${PORT}`));
