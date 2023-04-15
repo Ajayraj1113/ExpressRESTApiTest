@@ -45,7 +45,8 @@ app.delete("/deleteUser/:uid",(req,res)=>{
     const id = parseInt(req.params.uid)
     const found = members.some(member => member.id === id)
     if(found){
-        
+        const results = members.filter(member=> member.id !== id)
+        res.status(200).json(results)
     }else{
         res.status(400).json({msg:`No member found with the ID of ${id}`})
     }
